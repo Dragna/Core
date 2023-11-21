@@ -239,7 +239,20 @@ module Pod
       def spm_dependencies
         value = value_for_attribute(:spm_dependencies)
         value.map do |spm_dependency|
-          {:url => spm_dependency[:url], :requirement => Pod::Specification::SpmRequirement.new(spm_dependency[:requirement]), :products => spm_dependency[:products]}
+          # If we are in a local dependency case
+          if !spm_dependency[:path].nil?
+            {
+              :path => spm_dependency[:path],
+              :products => spm_dependency[:products]
+            }
+          # If we are in a remote dependency case
+          elsif !spm_dependency[:url].nil?
+            {
+              :url => spm_dependency[:url],
+              :requirement => Pod::Specification::SpmRequirement.new(spm_dependency[:requirement]),
+              :products => spm_dependency[:products]
+            }
+          end
         end
       end
 

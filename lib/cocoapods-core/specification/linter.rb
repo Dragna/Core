@@ -476,14 +476,15 @@ module Pod
       #
       def _validate_spm_dependencies(s)
         unless s.empty?
+          puts " 👀 _validate_spm_dependencies spm_dependencies: #{s} for #{consumer.name}"
           s.each do |spm_dependency|
-            if spm_dependency[:url].nil?
-              results.add_error('spm_dependencies', 'SPM dependencies should specify a url.')
+            if spm_dependency[:url].nil? && spm_dependency[:path].nil?
+              results.add_error('spm_dependencies', 'SPM dependencies should specify either a url or a path.')
             end
-            if spm_dependency[:requirement].nil?
-              results.add_error('spm_dependencies', 'SPM dependencies should specify a requirement.')
+            if !spm_dependency[:url].nil? && spm_dependency[:requirement].nil?
+              results.add_error('spm_dependencies', 'SPM dependencies should specify a requirement. When an URL is defined')
             end
-            if requirement_errors = SpmRequirement.validate(spm_dependency[:requirement])
+            if !spm_dependency[:requirement].nil? && requirement_errors = SpmRequirement.validate(spm_dependency[:requirement])
               results.add_error('spm_dependencies', requirement_errors)
             end
             if spm_dependency[:products].nil?

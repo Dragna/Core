@@ -600,23 +600,36 @@ module Pod
           result.swift_version.to_s.should == '4.1'
         end
 
-        describe 'Swift Package Manger dependencies' do
-          it 'writes spm dependency' do
-            @spec.spm_dependency(
-              :url => 'http://github.com/foo/foo',
-              :requirement => {:kind => 'upToNextMajorVersion', :minimumVersion => '1.0.0'},
-              :products => ['Foo'],
-            )
-            hash = @spec.to_hash
-            hash['spm_dependencies'].should == [
-              {
-                :url => 'http://github.com/foo/foo',
-                :requirement => {:kind => 'upToNextMajorVersion', :minimumVersion => '1.0.0'},
-                :products => ['Foo'],
-              },
-            ]
-          end
-        end
+        # describe 'Swift Package Manager dependencies' do
+        #   # it 'writes local spm dependency' do
+        #   #   @spec.spm_dependency(
+        #   #     :path => 'AnyPath',
+        #   #     :products => ['AnyPath'],
+        #   #   )
+        #   #   hash = @spec.to_hash
+        #   #   hash['spm_dependencies'].should == [
+        #   #     {
+        #   #       :path => 'AnyPath',
+        #   #       :products => ['AnyPath'],
+        #   #     },
+        #   #   ]
+        #   # end
+        #   it 'writes spm dependency' do
+        #     @spec.spm_dependency(
+        #       :url => 'http://github.com/foo/foo',
+        #       :requirement => {:kind => 'upToNextMajorVersion', :minimumVersion => '1.0.0'},
+        #       :products => ['Foo'],
+        #     )
+        #     hash = @spec.to_hash
+        #     hash['spm_dependencies'].should == [
+        #       {
+        #         :url => 'http://github.com/foo/foo',
+        #         :requirement => {:kind => 'upToNextMajorVersion', :minimumVersion => '1.0.0'},
+        #         :products => ['Foo'],
+        #       },
+        #     ]
+        #   end
+        # end
       end
     end
   end

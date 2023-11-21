@@ -763,7 +763,7 @@ module Pod
       #
       # ---
       #
-      # Dependencies should specify versions requirements.
+      # Dependencies should specify versions requirements only for remote dependencies.
       #
       # @example
       #   spec.spm_dependency(
@@ -772,14 +772,60 @@ module Pod
       #     :products' => ['Atomics']
       #   )
 
-      def spm_dependency(url: , requirement:, products:)
-        attributes_hash['spm_dependencies'] ||= []
-        attributes_hash['spm_dependencies'] << {
-          :url => url,
-          :requirement => requirement,
-          :products => products,
-        }
+      def spm_dependency(*args)
+        arguments = args[0]
+        # check that mandatory args are present
+        if !arguments.key?(:path) && !arguments.key?(:url)
+          raise Informative, "You should either define a local :path or a remote :url to your spm dependency"
+        end
+        # handle remote dependency case
+        if arguments.key?(:url)
+          if !arguments.key?(:requirement)
+            raise Informative, "You should define a version :requirement for your remote spm dependency"
+          end
+          if !arguments.key?(:products)
+            raise Informative, "You should define the :products you want to link for your remote spm dependency"
+          end
+
+          attributes_hash['spm_dependencies'] ||= []
+          attributes_hash['spm_dependencies'] << {
+            :url => arguments[:url],
+            :requirement => arguments[:requirement],
+            :products => arguments[:products],
+          }
+        # handle local dependency case
+        elsif arguments.key?(:path)
+          if !arguments.key?(:products)
+            raise Informative, "You should define the :products you want to link for your local spm dependency"
+          end
+          puts "will set spm_dependencies for #{arguments[:path]}"
+          attributes_hash['spm_dependencies'] ||= []
+          attributes_hash['spm_dependencies'] << {
+            :path => arguments[:path],
+            :products => arguments[:products],
+          }
+        end
       end
+
+      # # Dependency on Swift Manager Packages.
+      # #
+      # # ---
+      # #
+      # # Dependencies should specify versions requirements only for remote dependencies.
+      # #
+      # # @example
+      # #   spec.spm_dependency(
+      # #     :path => 'Dependencies/MyDependency',
+      # #     :products' => ['MyDependency']
+      # #   )
+
+      # def local_spm_dependency(path:, products:)
+      #   attributes_hash['spm_dependencies'] ||= []
+      #   attributes_hash['spm_dependencies'] << {
+      #     :path => url,
+      #     :products => products,
+      #   }
+      # end
 
       #------------------#
 

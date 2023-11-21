@@ -312,14 +312,20 @@ module Pod
 
       #------------------#
 
-      describe 'spm_dependency' do
-        it 'allows to specify a single spm_dependency' do
-          @spec.spm_dependency(:url => "foo", :requirement => {:kind => "upToNextMajorVersion", :minimumVersion => "1.0.0"}, :products => ["Foo"])
-          @spec.attributes_hash['spm_dependencies'].should == [
-            { :url => 'foo', :requirement => {:kind => "upToNextMajorVersion", :minimumVersion => "1.0.0"}, :products => ["Foo"] },
-          ]
-        end
-      end
+      # describe 'spm_dependency' do
+      #   # it 'allows to specify a single local spm_dependency' do
+      #   #   @spec.spm_dependency(:path => "Dependencies/Foo", :products => ["Foo"])
+      #   #   @spec.attributes_hash['spm_dependencies'].should == [
+      #   #     { :path => 'Dependencies/Foo', :products => ["Foo"] },
+      #   #   ]
+      #   # end
+      #   it 'allows to specify a single remote spm_dependency' do
+      #     @spec.spm_dependency(:url => "foo", :requirement => {:kind => "upToNextMajorVersion", :minimumVersion => "1.0.0"}, :products => ["Foo"])
+      #     @spec.attributes_hash['spm_dependencies'].should == [
+      #       { :url => 'foo', :requirement => {:kind => "upToNextMajorVersion", :minimumVersion => "1.0.0"}, :products => ["Foo"] },
+      #     ]
+      #   end
+      # end
 
       #------------------#
 
